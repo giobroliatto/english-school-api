@@ -1,0 +1,60 @@
+/* ----------------------- */
+/* ----- CURSO 1 ORM ----- */
+/* ----------------------- */
+
+/* ----- MYSQL ----- */
+
+/* conectando-se ao mysql */
+
+local do mysql -> cd /mnt/d/Arquivos\ de\ Programas/xampp/mysql/bin/
+
+iniciar o serviço do mysql -> sudo service mysql start
+
+inicializar o mysql -> sudo mysql -u root -p
+
+/* comandos dentro do mysql */
+
+criando usuário -> CREATE USER 'super'@'localhost' IDENTIFIED BY 'super';
+
+dando autorização total ao usuário -> GRANT ALL PRIVILEGES ON *.* TO 'super'@'localhost' WITH GRANT OPTION; (https://cursos.alura.com.br/forum/topico-access-denied-for-user-root-localhost-using-password-no-228967)
+
+show databases; -> lista os dbs
+use escola_ingles; -> seleciona um banco para utilizar
+show tables; -> lista tabelas
+describe Pessoas; -> detalha uma tabela específica
+(obs: insert into a seguir não é eficiente [criar um registro por vez manualmente via terminal mysql]. pra isso existe um comando no sequelize-cli seed:generate)
+insert into Pessoas (nome, ativo, email, role, createdAt, updatedAt) value ("Gio Broliatto", 1, "giovanibroliatto@gmail.com", "estudante", NOW(), NOW());
+select * from Pessoas; -> mostrar todos dados da tabela
+
+/* ----- SEQUELIZE-CLI ----- */
+
+criar um modelo de tabela (será criado arquivo em models) -> npx sequelize-cli model:create --name Pessoas --attributes nome:string,ativo:boolean,email:string,role:string
+
+IMPORTANTE: para realizar o vínculo de tabelas com as FKs, é preciso digitar o código direto nos modelos (na função .associate), e isso precisa ser feito antes de realizar a migração (https://sequelize.org/master/manual/assocs.html#options-2)
+
+realizar migração, que é basicamente um "versionamento" do banco, controlar e rastrear as alterações realizadas (será criado arquivo em migrations) -> npx sequelize-cli db:migrate (foi necessário criar um novo usuário que chamei de super)
+
+criar uma seed para alimentar a tabela de forma mais eficaz (será criado arquivo em seeders) -> npx sequelize-cli seed:generate --name demo-pessoa
+
+alimentar as tabelas com a seed criada -> npx sequelize-cli db:seed:all
+
+desfazer a última migração/seed feita -> npx sequelize-cli db:migrate/seed:undo
+
+desfazer migração/seed específica -> db:migrate/seed:undo --name [data-hora]-create-[nome-da-tabela].js
+
+/* ----------------------- */
+/* ----- CURSO 2 ORM ----- */
+/* ----------------------- */
+
+foram criados requisitos para serem implementados no CRUD. a seguir, cada um deles com a descrição do que foi feito
+
+1 - O cliente não gostaria que registros importantes do sistema, como as Pessoas, sejam apagados definitivamente do banco de dados.
+RES: adicionado ao model de cada uma das tabelas a propriedade "paranoid: true", dessa forma os registros aparecem deletados para o cliente, mas ficam apenas com uma flag no sistema de quando foi deletado. para isso, será preciso criar uma nova coluna nas tabelas (chamada deletedAt), que serão usadas como flag pelo mysql no momento do delete.
+isso pode ser feito através do console do mysql com os comandos:
+- alter table Pessoas;
+- add column deletedAt datatime after updatedAt;
+porém, para facilitar, é possível fazer isso através das migrations, que pode desfazer comandos realizados caso venha a ocorrer algum problema.
+então, cria-se um novo arquivo de migrations com a data atual (20221214223050-addcolumn-pessoas.js). o código é muito semelhante ao createTable, altera-se o método em "up" pra "addColumn", e passa-se um segundo parâmetro com o nome da coluna a ser criada e o terceiro parâmetro um objeto com as propriedades desta coluna.
+em "down", altera-se pra "removeColumn" e adiciona-se o segundo parâmetro com o nome da coluna.
+replica-se isso tudo pras outras tabela e roda o comando de migração "npx sequelize-cli db:migrate".
+após remover, o mysql trará apenas os registros que estejam com o deletedAt = NULL.
