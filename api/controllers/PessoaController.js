@@ -1,4 +1,5 @@
 const database = require('../models'); // aqui o js já procura por padrão um arquivo chamado "index.js" dentro de models
+const Sequelize = require('sequelize');
 
 class PessoaController {
 
@@ -193,6 +194,49 @@ class PessoaController {
       const matriculas = await pessoa.getAulasMatriculadas()
 
       return res.status(200).json(matriculas)
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async getMatriculasPorTurma(req, res) {
+    const { turmaId } = req.params;
+
+    try {
+      const todasMatriculas = await database.Matriculas.findAndCountAll({
+        where: {
+          turma_id: Number(turmaId),
+          status: 'confirmado'
+        },
+        limit: 10, // utilizado pra paginação
+        order: [['estudante_id', 'ASC']]
+      })
+
+      return res.status(200).json(todasMatriculas);
+
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async getTurmasLotadas(req, res) {
+    const lotacaoTurma = 2;
+
+    try {
+      
+      const turmasLotadas = await database.Matriculas.findAndCountAll({
+        where: {
+          status: 'confirmado',
+        },
+        attributes: ['turma_id'],
+        group: ['turma_id'],
+        having: Sequelize.literal(`
+          count(turma_id) >= ${lotacaoTurma}
+        `)
+      })
+
+      return res.status(200).json(turmasLotadas);
+
     } catch (error) {
       return res.status(500).json(error.message);
     }

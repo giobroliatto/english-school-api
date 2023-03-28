@@ -71,4 +71,15 @@ RES: no Sequelize, isso pode ser feito usando validations & constraints (https:/
 RES: aqui podemos usar os escopos de associação, que são parecidos com os escopos de modelo usados nos 2 requisitos anteriores, mas não será definido no ".define", será definido no ".associate"
 
 5 - O cliente gostaria de poder consultar as turmas abertas por intervalo de data, para não receber informações desnecessárias (como turmas antigas).
-RES: 
+RES: criado o filtro dentro do controller de turma
+
+6 - O cliente quer poder consultar as matrículas por turma e saber quais delas estão lotadas, para organizar melhor as matrículas.
+RES: utilizado o método "findAndCountAll()" no controller de pessoas, que é onde estão os controles de matrículas, pode-se retornar as matrículas por turma e, em um novo método, utilizando um where dentro do "findAndCountAll()", é possível retornar as turmas lotadas.
+obs: no caso de queries de SELECT, a ordem lógica é a seguinte:
+FROM: pega as tabelas onde estão os dados
+WHERE: filtra os dados
+GROUP BY: agrega os dados
+HAVING: filtra os dados agregados
+SELECT: retorna os resultados
+ORDER BY: ordena os resultados
+LIMIT: limita a quantidade de resultados
