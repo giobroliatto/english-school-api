@@ -52,9 +52,9 @@ foram criados requisitos para serem implementados no CRUD. a seguir, cada um del
 RES: adicionado ao model de cada uma das tabelas a propriedade "paranoid: true", dessa forma os registros aparecem deletados para o cliente, mas ficam apenas com uma flag no sistema de quando foi deletado. para isso, será preciso criar uma nova coluna nas tabelas (chamada deletedAt), que serão usadas como flag pelo mysql no momento do delete.
 isso pode ser feito através do console do mysql com os comandos:
 - alter table Pessoas;
-- add column deletedAt datatime after updatedAt;
+- add column deletedAt datetime after updatedAt;
 porém, para facilitar, é possível fazer isso através das migrations, que pode desfazer comandos realizados caso venha a ocorrer algum problema.
-então, cria-se um novo arquivo de migrations com a data atual (20221214223050-addcolumn-pessoas.js). o código é muito semelhante ao createTable, altera-se o método em "up" pra "addColumn", e passa-se um segundo parâmetro com o nome da coluna a ser criada e o terceiro parâmetro um objeto com as propriedades desta coluna.
+então, cria-se um novo arquivo de migrations com a data atual (20221214223050-addcolumn-pessoas.js). o código é muito semelhante ao createTable, altera-se o método "createTable" em "up" pra "addColumn", e passa-se um segundo parâmetro com o nome da coluna a ser criada e o terceiro parâmetro um objeto com as propriedades desta coluna.
 em "down", altera-se pra "removeColumn" e adiciona-se o segundo parâmetro com o nome da coluna.
 replica-se isso tudo pras outras tabela e roda o comando de migração "npx sequelize-cli db:migrate".
 após remover, o mysql trará apenas os registros que estejam com o deletedAt = NULL.
