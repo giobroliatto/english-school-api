@@ -69,3 +69,6 @@ RES: no Sequelize, isso pode ser feito usando validations & constraints (https:/
 
 4 - É importante poder consultar todas as matrículas confirmadas referentes a estudante X de forma rápida.
 RES: aqui podemos usar os escopos de associação, que são parecidos com os escopos de modelo usados nos 2 requisitos anteriores, mas não será definido no ".define", será definido no ".associate"
+
+5 - O cliente gostaria de poder consultar as turmas abertas por intervalo de data, para não receber informações desnecessárias (como turmas antigas).
+RES: 
