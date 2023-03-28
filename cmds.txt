@@ -58,3 +58,4 @@ então, cria-se um novo arquivo de migrations com a data atual (20221214223050-a
 em "down", altera-se pra "removeColumn" e adiciona-se o segundo parâmetro com o nome da coluna.
 replica-se isso tudo pras outras tabela e roda o comando de migração "npx sequelize-cli db:migrate".
 após remover, o mysql trará apenas os registros que estejam com o deletedAt = NULL.
+é preciso ser possível restaurar pessoas deletadas, pra isso foi criada a rota e o método de restauração.
