@@ -59,3 +59,7 @@ em "down", altera-se pra "removeColumn" e adiciona-se o segundo parâmetro com o
 replica-se isso tudo pras outras tabela e roda o comando de migração "npx sequelize-cli db:migrate".
 após remover, o mysql trará apenas os registros que estejam com o deletedAt = NULL.
 é preciso ser possível restaurar pessoas deletadas, pra isso foi criada a rota e o método de restauração.
+
+2 - Para deixar a interface mais limpa, o cliente gostaria que na lista de Pessoas, por padrão, fossem exibidos somente os usuários ativos.
+RES: para isso, serão usados Escopos (Scopes) do Sequelize. o escopo é como chamamos as regras que definem quão acessível ou “visível” uma informação (por exemplo, uma variável) está, dependendo da parte da aplicação. um escopo pode ter identificadores, alguma instrução de código ou algoritmo. isso será feito no mesmo local onde foi adicionado o paranoid, incluindo "defaultScope", que terá como valor um objeto onde serão passadas as condições do escopo. nesse caso, apenas os que tiverem a propriedade "ativo" como true.
+para definir outros escopos, que não seja o padrão, basta incluir a propriedade "scopes" no model desejado e ali dentro criar quantos escopos quiser, criando dentro do objeto o nome do escopo e passando pra esse outro objeto criado as especificações do escopo. pra usá-lo, é só chamar .scope dentro do controller na hora de acessar o banco.
