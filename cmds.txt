@@ -66,3 +66,6 @@ para definir outros escopos, que não seja o padrão, basta incluir a propriedad
 
 3 - Foram percebidas algumas falhas de validação dos formulários por parte do front-end, o que resultou em dados de email inválidos no banco. É desejável que essa validação não seja responsabilidade exclusiva do front.
 RES: no Sequelize, isso pode ser feito usando validations & constraints (https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/). isso é feito novamente no model, adicionando o validador "isEmail", mas não é dentro do objeto de opções como foi feito com o paranoid e com os escopos. isso é feito direto no atributo.
+
+4 - É importante poder consultar todas as matrículas confirmadas referentes a estudante X de forma rápida.
+RES: aqui podemos usar os escopos de associação, que são parecidos com os escopos de modelo usados nos 2 requisitos anteriores, mas não será definido no ".define", será definido no ".associate"
