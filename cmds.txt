@@ -83,3 +83,6 @@ HAVING: filtra os dados agregados
 SELECT: retorna os resultados
 ORDER BY: ordena os resultados
 LIMIT: limita a quantidade de resultados
+
+7 - O cliente gostaria que, uma vez que o cadastro de um estudante fosse desativado, todas as matrículas relativas a este estudante automaticamente passassem a constar como “canceladas”.
+RES: criado novo método POST no PessoasController que irá alterar a coluna "ativo" do aluno para false e o "status" da matrícula desse estudante para 'cancelado'
