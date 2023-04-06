@@ -92,3 +92,7 @@ https://sequelize.org/docs/v6/other-topics/transactions/
 
 -> foi adicionado dentro do bloco try do método "cancelPessoa" o trecho database.sequelize.transaction(async transacao => {...}), onde os métodos HTTP serão colocados dentro do escopo da função callback (no lugar das ...). as transações são métodos SQL que irão garantir que todas as operações dentro de um bloco de código SQL sejam realizadas até o fim, caso contrário será feito um rollback e nenhuma alteração é feita.
 por exemplo, se eu alterar um registro na tabela Pessoas para "ativo" falso, mas na hora de alterar o status na tabela Matriculas ocorrer um erro, a propriedade "ativo" irá sofrer um rollback e garantir a integridade dos dados. 
+
+
+-- CRIANDO SERVICES --
+-> para isolar os métodos realizados nos bancos, são criados services genéricos (Services.js) para os métodos mais abrangentes (findAll...), e services específicos (PessoasServices.js...) para os métodos específicos de cada situação.

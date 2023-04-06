@@ -1,13 +1,16 @@
 const database = require('../models'); // aqui o js já procura por padrão um arquivo chamado "index.js" dentro de models
 const Sequelize = require('sequelize');
 
+const { PessoasServices } = require('../services');
+const pessoasServices = new PessoasServices();
+
 class PessoaController {
 
   /* ---------- REGION PESSOA ---------- */
   
   static async getPessoasAtivas(req, res) {
     try {
-      const pessoasAtivas = await database.Pessoas.findAll();
+      const pessoasAtivas = await pessoasServices.pegaTodosOsRegistros();
       return res.status(200).json(pessoasAtivas);
     } catch (error) {
       return res.status(500).json(error.message);
