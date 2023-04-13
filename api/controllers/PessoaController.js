@@ -10,7 +10,7 @@ class PessoaController {
   
   static async getPessoasAtivas(req, res) {
     try {
-      const pessoasAtivas = await pessoasServices.pegaTodosOsRegistros();
+      const pessoasAtivas = await pessoasServices.pegaRegistrosAtivos();
       return res.status(200).json(pessoasAtivas);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -19,7 +19,7 @@ class PessoaController {
 
   static async getPessoas(req, res) {
     try {
-      const pessoas = await database.Pessoas.scope('todos').findAll();
+      const pessoas = await pessoasServices.pegaTodosOsRegistros();
       return res.status(200).json(pessoas);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -250,21 +250,9 @@ class PessoaController {
 
     try {
 
-      database.sequelize.transaction(async transacao => {
-        await database.Pessoas.update(
-          { ativo: false },
-          { where: { id: Number(estudanteId) } },
-          { transaction: transacao }
-        )
-  
-        await database.Matriculas.update(
-          { status: 'cancelado' },
-          { where: { id: Number(estudanteId) } },
-          { where: { estudante_id: Number(estudanteId) } }
-        )
-  
-        return res.status(200).json({ message: `matrículas referente ao estudante ${estudanteId} canceladas.`});
-      })
+      await pessoasServices.cancelaPessoaEMatriculas(Number(estudanteId))
+
+      return res.status(200).json({ message: `matrículas referente ao estudante ${estudanteId} canceladas.`});
 
     } catch (error) {
       return res.status(500).json(error.message);
