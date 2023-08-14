@@ -1,2 +1,0 @@
-# english-school-api
-test
