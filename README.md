@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/icon.svg" width="72" alt="english-school-api logo" />
+
 # english-school-api
 
 **REST API for an English school, built with Express and the Sequelize ORM on MySQL.**

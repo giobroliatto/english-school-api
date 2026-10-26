@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/icon.svg" width="72" alt="Logo do english-school-api" />
+
 # english-school-api
 
 **API REST de uma escola de inglês, com Express e o ORM Sequelize sobre MySQL.**
