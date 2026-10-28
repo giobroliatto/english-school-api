@@ -11,6 +11,8 @@
 ![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?logo=sequelize&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
 
+[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-green)](LICENSE)
+
 </div>
 
 [English](README.md) · **Português**
@@ -138,6 +140,12 @@ api/
 └── routes/        # Rotas por recurso
 arquivos-base/     # Arquivos-base do curso e o diagrama do banco (PDF)
 ```
+
+---
+
+## Licença
+
+[MIT](LICENSE)
 
 ---
 
